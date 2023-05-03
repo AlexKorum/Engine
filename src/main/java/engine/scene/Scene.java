@@ -1,12 +1,14 @@
 package engine.scene;
 
+import engine.interfaces.LoadFromJSON;
+import engine.interfaces.SaveToJSON;
 import engine.scene.objects.Object;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Scene {
+public class Scene implements SaveToJSON, LoadFromJSON {
     private static Scene instance;
 
     public static Scene getInstance() {
@@ -23,11 +25,6 @@ public class Scene {
     // Конструкторы
     private Scene() {
         name = "Default Scene";
-        objects = new HashMap<>();
-    }
-
-    private Scene(String name) {
-        this.name = name;
         objects = new HashMap<>();
     }
 
@@ -53,21 +50,23 @@ public class Scene {
 
     }
 
-
     public void removeObject(String name) {
 
     }
 
     // Сохранение и загрузка сцены
-    public void save(String path, String filename) {
+    @Override
+    public void saveToJSON(String path, String filename) {
 
     }
 
     public void save(String path) {
-        save(path, name);
+        saveToJSON(path, name);
     }
 
-    public void load(String path, String filename) {
+    @Override
+    public void loadFromJSON(String path, String filename) {
 
     }
+
 }
