@@ -12,7 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Window {
-    private final String url = "src\\main\\resources\\Settings\\WindowSettings.json";
+    private final String path = "src\\main\\resources\\Settings\\WindowSettings.json";
     private long windowId;
     private String title;
     private int width;
@@ -21,7 +21,7 @@ public class Window {
     public Window() {
         JSONObject windowSettings;
         try {
-            windowSettings = (JSONObject) new JSONParser().parse(new FileReader(url));
+            windowSettings = (JSONObject) new JSONParser().parse(new FileReader(path));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ParseException e) {
@@ -57,6 +57,9 @@ public class Window {
         GLFW.glfwSwapInterval(1);
         GLFW.glfwShowWindow(windowId);
         GL.createCapabilities();
+
+        // TODO переместить цвет в другое место
+        setBackgroundColor(255, 255, 0);
     }
 
     public void update() {
@@ -77,6 +80,15 @@ public class Window {
     public void setWindowTitle(String title) {
         this.title = title;
         GLFW.glfwSetWindowTitle(this.windowId, title);
+    }
+
+    public void setBackgroundColor(float r, float g, float b) {
+        if (r + g + b > 3) {
+            r = r / 255;
+            g = g / 255;
+            b = b / 255;
+        }
+        GL11.glClearColor(r, g, b, 1);
     }
 
 }

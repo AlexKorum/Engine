@@ -2,42 +2,66 @@ package engine.scene.objects;
 
 import engine.interfaces.ConvertClassToJSON;
 import engine.interfaces.ConvertJSONToClass;
-import engine.interfaces.LoadFromJSON;
-import engine.interfaces.SaveToJSON;
+import engine.scene.Scene;
 import engine.scene.objects.components.Component;
 import engine.scene.objects.components.ComponentsList;
+import engine.scene.objects.components.Transform;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
-public class Object implements ConvertClassToJSON, ConvertJSONToClass, LoadFromJSON, SaveToJSON {
+public class Object implements ConvertClassToJSON, ConvertJSONToClass {
     protected String name;
-    protected Map<ComponentsList, Component> components;
+    protected EnumMap<ComponentsList, Component> components;
 
     public Object() {
+        this.init();
         name = "GameObject";
-        components = new HashMap<>();
     }
 
     public Object(String name) {
+        this.init();
         this.name = name;
-        components = new HashMap<>();
-    }
-
-    public Object(String path, String filename) {
-        components = new HashMap<>();
-        this.loadFromJSON(path, filename);
     }
 
     public Object(JSONObject json) {
-        components = new HashMap<>();
+        this.init();
         this.fromJSON(json);
     }
 
-    public void addComponent(ComponentsList type) {
+    private void init() {
+        components = new EnumMap<>(ComponentsList.class);
+        components.put(ComponentsList.TRANSFORM, new Transform());
+    }
 
+
+    public void setName(String name) {
+        if (Scene.getInstance().getObject(name) == null) {
+            this.name = name;
+            Scene.getInstance().addObject(this);
+        } else {
+            if (this.equals(Scene.getInstance().getObject(name))) {
+                Scene.getInstance().removeObject(name);
+                this.name = name;
+                Scene.getInstance().addObject(this);
+            } else {
+                System.out.println("Нельзя использовать имя, которое уже используется другим объектом");
+            }
+        }
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Component addComponent(ComponentsList type) {
+        if (type.equals(ComponentsList.TRANSFORM)) return components.get(ComponentsList.TRANSFORM);
+        Component component = ComponentsList.getComponent(type);
+        components.put(type, component);
+        return component;
     }
 
     public Component getComponent(ComponentsList type) {
@@ -45,34 +69,55 @@ public class Object implements ConvertClassToJSON, ConvertJSONToClass, LoadFromJ
     }
 
     public void removeComponent(ComponentsList type) {
-        if (type == ComponentsList.Transform) return;
+        if (type == ComponentsList.TRANSFORM) return;
+        components.remove(type);
     }
 
     public List<Component> getComponents() {
         return components.values().stream().toList();
     }
 
-    @Override
-    public void saveToJSON(String path, String filename) {
-
-    }
-
-    public void saveToJSON(String path) {
-        saveToJSON(path, name);
-    }
-
-    @Override
-    public void loadFromJSON(String path, String filename) {
-
-    }
-
+    // Конвертирование
     @Override
     public JSONObject toJSON() {
-        return null;
+        JSONObject objectJSON = new JSONObject();
+        objectJSON.put("name", name);
+        objectJSON.put("type", "Object");
+
+        JSONArray componentsArray = new JSONArray();
+        for (Component component : components.values()) {
+            componentsArray.add(component.toJSON());
+        }
+        objectJSON.put("components", componentsArray);
+
+        return objectJSON;
     }
 
     @Override
     public void fromJSON(JSONObject json) {
+        if (json.get("type").equals("Object")) {
+            this.name = (String) json.get("name");
 
+            JSONArray componentsArray = (JSONArray) json.get("components");
+            Component component;
+            for (int i = 0; i < componentsArray.size(); i++) {
+                component = ComponentsList.getComponent(((JSONObject) componentsArray.get(0)).get("tag").toString());
+                component.fromJSON((JSONObject) componentsArray.get(0));
+                components.put(component.getTag(), component);
+            }
+        } else {
+            throw new IllegalStateException("В переданном JSON хранится не Object.\n" + json);
+        }
+    }
+
+    @Override
+    public String toString() {
+        String objectString = "Object: " + name + "\n";
+
+        for (Component component : components.values()) {
+            objectString += component.toString() + "\n";
+        }
+
+        return objectString;
     }
 }

@@ -1,14 +1,17 @@
 package engine.scene;
 
-import engine.interfaces.LoadFromJSON;
-import engine.interfaces.SaveToJSON;
+import engine.interfaces.ConvertClassToJSON;
+import engine.interfaces.ConvertJSONToClass;
 import engine.scene.objects.Object;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Scene implements SaveToJSON, LoadFromJSON {
+public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
+    // Паттерн Singleton
     private static Scene instance;
 
     public static Scene getInstance() {
@@ -17,6 +20,7 @@ public class Scene implements SaveToJSON, LoadFromJSON {
         }
         return instance;
     }
+
 
     // Переменные
     private String name;
@@ -28,6 +32,7 @@ public class Scene implements SaveToJSON, LoadFromJSON {
         objects = new HashMap<>();
     }
 
+
     // Геттеры и сеттеры
     public String getName() {
         return name;
@@ -37,36 +42,79 @@ public class Scene implements SaveToJSON, LoadFromJSON {
         this.name = name;
     }
 
+    public Object getObject(String name) {
+        return objects.get(name);
+    }
+
     public List<Object> getObjects() {
         return objects.values().stream().toList();
     }
 
     // Добавление и удаление объектов со сцены
-    public void addObject(String name, Object object) {
-
+    public void addObject(Object object) {
+        if (!objects.containsKey(object.getName())) {
+            objects.put(object.getName(), object);
+        } else {
+            String newName = null;
+            for (int i = 0; i < Integer.MAX_VALUE; i++) {
+                newName = object.getName() + i;
+                if (!objects.containsKey(newName)) break;
+            }
+            object.setName(newName);
+            objects.put(object.getName(), object);
+        }
     }
 
-    public void addObjectFromPrefabs(String pathPrefabs, String filename) {
-
+    public void addObject(JSONObject objectJSON) {
+        Object object = new Object(objectJSON);
+        this.addObject(object);
     }
 
     public void removeObject(String name) {
-
+        objects.remove(name);
     }
 
-    // Сохранение и загрузка сцены
+    // Конвертирование
     @Override
-    public void saveToJSON(String path, String filename) {
+    public JSONObject toJSON() {
+        JSONObject sceneJSON = new JSONObject();
+        sceneJSON.put("name", name);
+        sceneJSON.put("type", "Scene");
 
+        JSONArray objectsArray = new JSONArray();
+        for (Object object : objects.values()) {
+            objectsArray.add(object.toJSON());
+        }
+
+        sceneJSON.put("objects", objectsArray);
+
+        return sceneJSON;
     }
 
-    public void save(String path) {
-        saveToJSON(path, name);
+
+    @Override
+    public void fromJSON(JSONObject json) {
+        if (json.get("type").equals("Scene")) {
+            objects.clear();
+            this.name = json.get("name").toString();
+
+            JSONArray objectsArray = (JSONArray) json.get("objects");
+            for (int i = 0; i < objectsArray.size(); i++) {
+                addObject((JSONObject) objectsArray.get(i));
+            }
+        } else {
+            throw new IllegalStateException("В переданном JSON хранится не Scene.\n" + json);
+        }
     }
 
     @Override
-    public void loadFromJSON(String path, String filename) {
+    public String toString() {
+        String sceneString = "Scene: " + name + "\n\n";
 
+        for (Object object : objects.values()) {
+            sceneString += object.toString() + "\n";
+        }
+
+        return sceneString;
     }
-
 }
