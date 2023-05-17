@@ -3,6 +3,7 @@ package engine.scene;
 import engine.interfaces.ConvertClassToJSON;
 import engine.interfaces.ConvertJSONToClass;
 import engine.scene.objects.Object;
+import engine.scene.objects.entities.Camera;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -24,12 +25,14 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
 
     // Переменные
     private String name;
+    private Camera mainCamera;
     private Map<String, Object> objects;
 
     // Конструкторы
     private Scene() {
         name = "Default Scene";
         objects = new HashMap<>();
+        mainCamera = new Camera();
     }
 
 
@@ -40,6 +43,10 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Camera getMainCamera() {
+        return mainCamera;
     }
 
     public Object getObject(String name) {
@@ -80,11 +87,13 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
         JSONObject sceneJSON = new JSONObject();
         sceneJSON.put("name", name);
         sceneJSON.put("type", "Scene");
+        sceneJSON.put("MainCamera", mainCamera.toJSON());
 
         JSONArray objectsArray = new JSONArray();
         for (Object object : objects.values()) {
             objectsArray.add(object.toJSON());
         }
+
 
         sceneJSON.put("objects", objectsArray);
 
@@ -98,6 +107,7 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
             objects.clear();
             this.name = json.get("name").toString();
 
+            mainCamera.fromJSON((JSONObject) json.get("MainCamera"));
             JSONArray objectsArray = (JSONArray) json.get("objects");
             for (int i = 0; i < objectsArray.size(); i++) {
                 addObject((JSONObject) objectsArray.get(i));
@@ -109,12 +119,9 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
 
     @Override
     public String toString() {
-        String sceneString = "Scene: " + name + "\n\n";
-
-        for (Object object : objects.values()) {
-            sceneString += object.toString() + "\n";
-        }
-
-        return sceneString;
+        return "Scene{" +
+                "name='" + name + '\'' +
+                ", objects=" + objects +
+                '}';
     }
 }

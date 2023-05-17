@@ -10,17 +10,19 @@ public class RenderEngine implements EngineInterfaces {
     private Renderer renderer;
 
     public RenderEngine() {
-        window = new Window();
+        window = Window.getInstance();
         renderer = new Renderer();
     }
 
     @Override
     public void init() {
         window.create();
+        renderer.init();
     }
 
     @Override
     public void update() {
+        renderer.update();
         window.update();
     }
 
@@ -29,6 +31,7 @@ public class RenderEngine implements EngineInterfaces {
     }
 
     public void close() {
+        renderer.close();
         window.close();
     }
 }

@@ -40,7 +40,7 @@ public class LoaderOBJ {
                     vertexes.add(vertex);
                 } else if (line.startsWith("vn ")) {
                     Vector3f normal = new Vector3f(Float.parseFloat(currentLine[1]),
-                            Float.parseFloat(currentLine[1]), Float.parseFloat(currentLine[1]));
+                            Float.parseFloat(currentLine[2]), Float.parseFloat(currentLine[3]));
                     normals.add(normal);
                 } else if (line.startsWith("f ")) {
                     normalArray = new float[vertexes.size() * 3];
@@ -73,9 +73,9 @@ public class LoaderOBJ {
 
         int vertexPointer = 0;
         for (Vector3f vertex : vertexes) {
-            vertexesArray[vertexPointer++] = vertex.x;
-            vertexesArray[vertexPointer++] = vertex.y;
-            vertexesArray[vertexPointer++] = vertex.z;
+            vertexesArray[vertexPointer++] = vertex.x/2;
+            vertexesArray[vertexPointer++] = vertex.y/2;
+            vertexesArray[vertexPointer++] = vertex.z/2;
         }
 
         for (int i = 0; i < indexes.size(); i++) {
@@ -87,7 +87,7 @@ public class LoaderOBJ {
     }
 
     private static void processVertex(String[] vertexData, List<Integer> indexes, List<Vector3f> normals, float[] normalArrays) {
-        int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;
+        int currentVertexPointer = Integer.parseInt(vertexData[0])-1;
         indexes.add(currentVertexPointer);
 
         Vector3f currentNorm = normals.get(Integer.parseInt(vertexData[2]) - 1);

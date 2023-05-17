@@ -7,18 +7,28 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
+import utilities.JSON.ManagerJSON;
 
 import java.io.FileReader;
 import java.io.IOException;
 
 public class Window {
+    private static Window instance;
     private final String path = "src\\main\\resources\\Settings\\WindowSettings.json";
     private long windowId;
     private String title;
     private int width;
     private int height;
+    private boolean resize;
 
-    public Window() {
+    public static Window getInstance() {
+        if (instance == null) {
+            instance = new Window();
+        }
+        return instance;
+    }
+
+    private Window() {
         JSONObject windowSettings;
         try {
             windowSettings = (JSONObject) new JSONParser().parse(new FileReader(path));
@@ -31,6 +41,8 @@ public class Window {
         this.title = windowSettings.get("Title").toString();
         this.width = Integer.parseInt(windowSettings.get("Width").toString());
         this.height = Integer.parseInt(windowSettings.get("Height").toString());
+
+        resize = true;
     }
 
     public void create() {
@@ -50,16 +62,17 @@ public class Window {
 
         // Калбек на изменение размера окна (меняет область отображения на полный размер окна)
         GLFW.glfwSetWindowSizeCallback(windowId, (windowId, width, height) -> {
+            this.width = width;
+            this.height = height;
             GL11.glViewport(0, 0, width, height);
+
+            resize = true;
         });
 
         GLFW.glfwMakeContextCurrent(windowId);
         GLFW.glfwSwapInterval(1);
         GLFW.glfwShowWindow(windowId);
         GL.createCapabilities();
-
-        // TODO переместить цвет в другое место
-        setBackgroundColor(255, 255, 0);
     }
 
     public void update() {
@@ -82,13 +95,19 @@ public class Window {
         GLFW.glfwSetWindowTitle(this.windowId, title);
     }
 
-    public void setBackgroundColor(float r, float g, float b) {
-        if (r + g + b > 3) {
-            r = r / 255;
-            g = g / 255;
-            b = b / 255;
-        }
-        GL11.glClearColor(r, g, b, 1);
+    public int getWidth() {
+        return width;
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public boolean isResize() {
+        return resize;
+    }
+
+    public void setResize(boolean resize) {
+        this.resize = resize;
+    }
 }

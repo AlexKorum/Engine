@@ -2,25 +2,32 @@ package engine.scene.objects.components;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import utilities.Loaders.LoaderOBJ;
+import utilities.Loaders.LoaderVAO;
+
+import java.util.Arrays;
 
 public class Mesh extends Component {
+    private int vaoId;
     private int[] indexes;
     private float[] vertexes;
     private float[] normals;
 
     public Mesh() {
         super(ComponentsList.MESH);
-    }
-
-    public Mesh(int[] indexes, float[] vertexes, float[] normals) {
-        this();
-        set(indexes, vertexes, normals);
+        LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Cube.obj", this);
     }
 
     public void set(int[] indexes, float[] vertexes, float[] normals) {
         this.indexes = indexes.clone();
         this.vertexes = vertexes.clone();
         this.normals = normals.clone();
+
+        vaoId = LoaderVAO.getInstance().loadToVao(this.indexes, this.vertexes, this.normals);
+    }
+
+    public int getVaoId() {
+        return vaoId;
     }
 
     public int[] getIndexes() {
@@ -63,7 +70,7 @@ public class Mesh extends Component {
 
     @Override
     public void fromJSON(JSONObject json) {
-        if (!json.get("tag").equals("MESH")) throw new IllegalStateException("Попытка загрузить не компонент MESH");
+        if (!json.get("tag").equals(ComponentsList.MESH.toString())) throw new IllegalStateException("Попытка загрузить не компонент MESH");
         JSONArray indexesJSON = (JSONArray) json.get("indexes");
         JSONArray vertexesJSON = (JSONArray) json.get("vertexes");
         JSONArray normalsJSON = (JSONArray) json.get("normals");
@@ -73,10 +80,27 @@ public class Mesh extends Component {
         vertexes = new float[vertexesJSON.size()];
         normals = new float[normalsJSON.size()];
 
-        for (int i = 0; i < vertexes.length; i++) {
+        for (int i = 0; i < indexes.length; i++) {
             indexes[i] = Integer.parseInt(indexesJSON.get(i).toString());
+        }
+        for (int i = 0; i < vertexes.length; i++) {
             vertexes[i] = Float.parseFloat(vertexesJSON.get(i).toString());
+        }
+        for (int i = 0; i < normals.length; i++) {
+            ;
             normals[i] = Float.parseFloat(normalsJSON.get(i).toString());
         }
+
+        vaoId = LoaderVAO.getInstance().loadToVao(indexes, vertexes, normals);
+    }
+
+    @Override
+    public String toString() {
+        return "Mesh{" +
+                "vaoId=" + vaoId +
+                ", indexes=" + Arrays.toString(indexes) +
+                ", vertexes=" + Arrays.toString(vertexes) +
+                ", normals=" + Arrays.toString(normals) +
+                '}';
     }
 }

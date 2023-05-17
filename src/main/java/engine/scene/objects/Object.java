@@ -31,7 +31,7 @@ public class Object implements ConvertClassToJSON, ConvertJSONToClass {
         this.fromJSON(json);
     }
 
-    private void init() {
+    protected void init() {
         components = new EnumMap<>(ComponentsList.class);
         components.put(ComponentsList.TRANSFORM, new Transform());
     }
@@ -101,14 +101,15 @@ public class Object implements ConvertClassToJSON, ConvertJSONToClass {
             JSONArray componentsArray = (JSONArray) json.get("components");
             Component component;
             for (int i = 0; i < componentsArray.size(); i++) {
-                component = ComponentsList.getComponent(((JSONObject) componentsArray.get(0)).get("tag").toString());
-                component.fromJSON((JSONObject) componentsArray.get(0));
+                component = ComponentsList.getComponent(((JSONObject) componentsArray.get(i)).get("tag").toString());
+                component.fromJSON((JSONObject) componentsArray.get(i));
                 components.put(component.getTag(), component);
             }
         } else {
             throw new IllegalStateException("В переданном JSON хранится не Object.\n" + json);
         }
     }
+
 
     @Override
     public String toString() {
