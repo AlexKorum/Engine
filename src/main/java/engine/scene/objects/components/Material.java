@@ -11,8 +11,8 @@ public class Material extends Component {
     public Material() {
         super(ComponentsList.MATERIAL);
         color = new Vector3f(178f / 255f, 180f / 255f, 180f / 255f);
-        reflectivity = 0;
-        shineDamping = 1;
+        reflectivity = 1f;
+        shineDamping = 10f;
     }
 
     public Vector3f getColor() {

@@ -78,7 +78,7 @@ public class Window {
     public void update() {
         GLFW.glfwSwapBuffers(windowId);
         GLFW.glfwSwapInterval(1);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT| GL11.GL_DEPTH_BUFFER_BIT);
     }
 
     public void close() {
@@ -93,6 +93,10 @@ public class Window {
     public void setWindowTitle(String title) {
         this.title = title;
         GLFW.glfwSetWindowTitle(this.windowId, title);
+    }
+
+    public long getWindowId() {
+        return windowId;
     }
 
     public int getWidth() {

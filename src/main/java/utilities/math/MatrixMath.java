@@ -4,12 +4,10 @@ import engine.render.window.Window;
 import engine.scene.objects.components.ComponentsList;
 import engine.scene.objects.components.Transform;
 import engine.scene.objects.entities.Camera;
-import org.json.simple.JSONObject;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import utilities.JSON.ManagerJSON;
+import org.lwjgl.util.vector.Vector4f;
 
 public class MatrixMath {
     public static Matrix4f createTransformationMatrix(Transform transform) {
@@ -51,5 +49,13 @@ public class MatrixMath {
                 -cameraTransform.getPosition().getZ());
         Matrix4f.translate(negateCameraPos, viewMatrix, viewMatrix);
         return viewMatrix;
+    }
+
+    public static Matrix4f createRotateMatrix(Vector3f rotate) {
+        Matrix4f rotateMatrix = new Matrix4f();
+        rotateMatrix.setIdentity();
+        Matrix4f.rotate((float) Math.toRadians(-rotate.getX()), new Vector3f(1, 0, 0), rotateMatrix, rotateMatrix);
+        Matrix4f.rotate((float) Math.toRadians(-rotate.getY()), new Vector3f(0, 1, 0), rotateMatrix, rotateMatrix);
+        return rotateMatrix;
     }
 }

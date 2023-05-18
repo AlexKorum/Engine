@@ -4,6 +4,7 @@ import engine.interfaces.ConvertClassToJSON;
 import engine.interfaces.ConvertJSONToClass;
 import engine.scene.objects.Object;
 import engine.scene.objects.entities.Camera;
+import engine.scene.objects.entities.Light;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -26,6 +27,7 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
     // Переменные
     private String name;
     private Camera mainCamera;
+    private Light light;
     private Map<String, Object> objects;
 
     // Конструкторы
@@ -33,6 +35,7 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
         name = "Default Scene";
         objects = new HashMap<>();
         mainCamera = new Camera();
+        light = new Light();
     }
 
 
@@ -47,6 +50,10 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
 
     public Camera getMainCamera() {
         return mainCamera;
+    }
+
+    public Light getLight() {
+        return light;
     }
 
     public Object getObject(String name) {
