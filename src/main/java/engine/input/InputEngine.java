@@ -4,15 +4,18 @@ import engine.interfaces.EngineInterfaces;
 import engine.render.window.Window;
 import engine.scene.Scene;
 import engine.scene.objects.Object;
-import engine.scene.objects.components.ComponentsList;
+import engine.scene.objects.components.Collider;
+import engine.scene.objects.components.enums.ColliderList;
+import engine.scene.objects.components.enums.ComponentsList;
 import engine.scene.objects.components.Material;
 import engine.scene.objects.components.Mesh;
 import engine.scene.objects.components.Transform;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import utilities.JSON.ManagerJSON;
 import utilities.Loaders.LoaderOBJ;
+
+import java.util.Random;
 
 public class InputEngine implements EngineInterfaces {
     private Scene scene;
@@ -63,7 +66,7 @@ public class InputEngine implements EngineInterfaces {
         }
 
         // Генерация объекта
-        for (int i = GLFW.GLFW_KEY_1; i <= GLFW.GLFW_KEY_5; i++) {
+        for (int i = GLFW.GLFW_KEY_1; i <= GLFW.GLFW_KEY_7; i++) {
             if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), i) == GLFW.GLFW_PRESS) {
                 generationObject();
             }
@@ -86,17 +89,23 @@ public class InputEngine implements EngineInterfaces {
         forward.scale(2f);
         transform.getPosition().translate(forward.getX(), forward.getY(), forward.getZ());
 
+        Random random = new Random(System.nanoTime());
         Material material = (Material) object.addComponent(ComponentsList.MATERIAL);
+        material.setColor(random.nextFloat(), random.nextFloat(), random.nextFloat());
 
         Mesh mesh = (Mesh) object.addComponent(ComponentsList.MESH);
+        Collider collider = (Collider) object.addComponent(ComponentsList.COLLIDER);
         if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_1) == GLFW.GLFW_PRESS) {
             LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Cube.obj", mesh);
+            collider.setType(ColliderList.CUBE);
         }
         if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_2) == GLFW.GLFW_PRESS) {
             LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Sphere.obj", mesh);
+            collider.setType(ColliderList.SPHERE);
         }
         if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_3) == GLFW.GLFW_PRESS) {
-            LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Torus.obj", mesh);
+            LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Plane.obj", mesh);
+            collider.setType(ColliderList.PLANE);
         }
         if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_4) == GLFW.GLFW_PRESS) {
             LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Cylinder.obj", mesh);
@@ -104,12 +113,12 @@ public class InputEngine implements EngineInterfaces {
         if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_5) == GLFW.GLFW_PRESS) {
             LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Concuss.obj", mesh);
         }
-//        if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_6) == GLFW.GLFW_PRESS) {
-//            LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Monkey.obj", mesh);
-//        }
-//        if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_7) == GLFW.GLFW_PRESS) {
-//            LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\dragon.obj", mesh);
-//        }
+        if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_6) == GLFW.GLFW_PRESS) {
+            LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Torus.obj", mesh);
+        }
+        if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_7) == GLFW.GLFW_PRESS) {
+            LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\dragon.obj", mesh);
+        }
 
 
         scene.addObject(object);

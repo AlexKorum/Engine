@@ -1,5 +1,6 @@
 package engine.scene.objects.components;
 
+import engine.scene.objects.components.enums.ComponentsList;
 import org.json.simple.JSONObject;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -10,8 +11,8 @@ public class Transform extends Component {
 
     public Transform() {
         super(ComponentsList.TRANSFORM);
-        position = new Vector3f();
-        rotation = new Vector3f();
+        position = new Vector3f(0, 0, 0);
+        rotation = new Vector3f(0, 0, 0);
         scale = new Vector3f(1, 1, 1);
     }
 
@@ -75,7 +76,8 @@ public class Transform extends Component {
 
     @Override
     public void fromJSON(JSONObject json) {
-        if (!json.get("tag").equals("TRANSFORM")) throw new IllegalStateException("Попытка загрузить не компонент TRANSFORM");
+        if (!json.get("tag").equals("TRANSFORM"))
+            throw new IllegalStateException("Попытка загрузить не компонент TRANSFORM");
         JSONObject positionJSON = (JSONObject) json.get("position");
         position.set(Float.parseFloat(positionJSON.get("x").toString()),
                 Float.parseFloat(positionJSON.get("y").toString()),

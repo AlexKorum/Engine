@@ -2,7 +2,8 @@ package engine.scene.objects.entities;
 
 import engine.scene.objects.Object;
 import engine.scene.objects.components.Component;
-import engine.scene.objects.components.ComponentsList;
+import engine.scene.objects.components.enums.ComponentsList;
+import engine.scene.objects.components.Transform;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -13,6 +14,7 @@ public class Camera extends Object {
 
     public Camera() {
         super("Camera");
+        ((Transform) getComponent(ComponentsList.TRANSFORM)).getPosition().translate(0, 1, 6);
     }
 
     public Camera(String name) {

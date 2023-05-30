@@ -1,8 +1,8 @@
 package utilities.math;
 
 import engine.render.window.Window;
-import engine.scene.objects.components.ComponentsList;
 import engine.scene.objects.components.Transform;
+import engine.scene.objects.components.enums.ComponentsList;
 import engine.scene.objects.entities.Camera;
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
@@ -54,8 +54,8 @@ public class MatrixMath {
     public static Matrix4f createRotateMatrix(Vector3f rotate) {
         Matrix4f rotateMatrix = new Matrix4f();
         rotateMatrix.setIdentity();
-        Matrix4f.rotate((float) Math.toRadians(-rotate.getX()), new Vector3f(1, 0, 0), rotateMatrix, rotateMatrix);
         Matrix4f.rotate((float) Math.toRadians(-rotate.getY()), new Vector3f(0, 1, 0), rotateMatrix, rotateMatrix);
+        Matrix4f.rotate((float) Math.toRadians(-rotate.getX()), new Vector3f(1, 0, 0), rotateMatrix, rotateMatrix);
         return rotateMatrix;
     }
 }

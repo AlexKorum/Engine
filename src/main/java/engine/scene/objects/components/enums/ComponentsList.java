@@ -1,7 +1,10 @@
-package engine.scene.objects.components;
+package engine.scene.objects.components.enums;
+
+import engine.scene.objects.components.*;
+import engine.scene.objects.components.Collider;
 
 public enum ComponentsList {
-    TRANSFORM, MESH, MATERIAL;
+    TRANSFORM, MESH, MATERIAL, COLLIDER;
 
     public static Component getComponent(ComponentsList componentName) {
         Component component;
@@ -9,6 +12,7 @@ public enum ComponentsList {
             case TRANSFORM -> component = new Transform();
             case MESH -> component = new Mesh();
             case MATERIAL -> component = new Material();
+            case COLLIDER -> component = new Collider();
             default -> component = null;
         }
         return component;

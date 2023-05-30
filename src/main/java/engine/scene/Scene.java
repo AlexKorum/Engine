@@ -29,6 +29,7 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
     private Camera mainCamera;
     private Light light;
     private Map<String, Object> objects;
+    private boolean newObjectFrag;
 
     // Конструкторы
     private Scene() {

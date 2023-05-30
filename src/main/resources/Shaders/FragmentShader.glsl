@@ -31,6 +31,6 @@ void main(void){
     vec3 finalSpecular = dampedFactor * lightColor;
 
     vec3 color = vec3(diffuse) * materialColor + finalSpecular + vec3(0.1f);
-    color = pow(color, vec3(0.4545));
+    color = pow(color, vec3(0.454545));
     fragColor = vec4(color, 1.0);
 }

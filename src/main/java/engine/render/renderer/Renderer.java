@@ -4,7 +4,7 @@ import engine.render.shaders.StaticShader;
 import engine.render.window.Window;
 import engine.scene.Scene;
 import engine.scene.objects.Object;
-import engine.scene.objects.components.ComponentsList;
+import engine.scene.objects.components.enums.ComponentsList;
 import engine.scene.objects.components.Material;
 import engine.scene.objects.components.Mesh;
 import engine.scene.objects.components.Transform;

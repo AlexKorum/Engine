@@ -4,7 +4,7 @@ import engine.interfaces.ConvertClassToJSON;
 import engine.interfaces.ConvertJSONToClass;
 import engine.scene.Scene;
 import engine.scene.objects.components.Component;
-import engine.scene.objects.components.ComponentsList;
+import engine.scene.objects.components.enums.ComponentsList;
 import engine.scene.objects.components.Transform;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -40,7 +40,6 @@ public class Object implements ConvertClassToJSON, ConvertJSONToClass {
     public void setName(String name) {
         if (Scene.getInstance().getObject(name) == null) {
             this.name = name;
-            Scene.getInstance().addObject(this);
         } else {
             if (this.equals(Scene.getInstance().getObject(name))) {
                 Scene.getInstance().removeObject(name);

@@ -1,9 +1,8 @@
 package engine.input;
 
-import engine.scene.Scene;
 import engine.scene.objects.Object;
-import engine.scene.objects.components.ComponentsList;
 import engine.scene.objects.components.Transform;
+import engine.scene.objects.components.enums.ComponentsList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -20,7 +19,7 @@ public class MoveController {
 
     public MoveController(Object object) {
         this.object = object;
-        velocity = 0.5f;
+        velocity = 0.1f;
         angleVelocity = (float) (Math.PI / 2);
 
         forward = new Vector4f(0, 0, -1, 0);

@@ -1,5 +1,6 @@
 package engine.scene.objects.components;
 
+import engine.scene.objects.components.enums.ComponentsList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import utilities.Loaders.LoaderOBJ;
