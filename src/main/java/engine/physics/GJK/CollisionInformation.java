@@ -11,6 +11,11 @@ public class CollisionInformation {
         penetrationDepth = 0;
     }
 
+    public CollisionInformation(Vector3f normal, float penetrationDepth) {
+        this.normal = normal;
+        this.penetrationDepth = penetrationDepth;
+    }
+
     public void set(Vector3f normal, float penetrationDepth) {
         this.normal.set(normal);
         this.penetrationDepth = penetrationDepth;

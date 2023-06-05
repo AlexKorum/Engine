@@ -150,7 +150,7 @@ public class GJK {
         return Vector3f.dot(direction, ao) > 0;
     }
 
-    private static Vector3f support(float[] vertexesA, float[] vertexesB, Vector3f direction) {
+    public static Vector3f support(float[] vertexesA, float[] vertexesB, Vector3f direction) {
         Vector3f vectorA = findFurthestPoint(vertexesA, direction);
         Vector3f dNeg = new Vector3f(-direction.getX(), -direction.getY(), -direction.getZ());
         Vector3f vectorB = findFurthestPoint(vertexesB, dNeg);

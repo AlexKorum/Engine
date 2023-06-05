@@ -4,27 +4,28 @@ import engine.interfaces.EngineInterfaces;
 import engine.render.window.Window;
 import engine.scene.Scene;
 import engine.scene.objects.Object;
-import engine.scene.objects.components.Collider;
+import engine.scene.objects.components.*;
 import engine.scene.objects.components.enums.ColliderList;
 import engine.scene.objects.components.enums.ComponentsList;
-import engine.scene.objects.components.Material;
-import engine.scene.objects.components.Mesh;
-import engine.scene.objects.components.Transform;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import utilities.JSON.ManagerJSON;
 import utilities.Loaders.LoaderOBJ;
+import utilities.classes.GlobalTimer;
 
 import java.util.Random;
 
 public class InputEngine implements EngineInterfaces {
     private Scene scene;
     private MoveController controller;
+    private float oldDeltaTime;
 
     @Override
     public void init() {
         this.scene = Scene.getInstance();
         this.controller = new MoveController(scene.getMainCamera());
+        this.oldDeltaTime = GlobalTimer.getDeltaTimeSeconds();
     }
 
     @Override
@@ -81,6 +82,10 @@ public class InputEngine implements EngineInterfaces {
     }
 
     private void generationObject() {
+        if (oldDeltaTime == GlobalTimer.getDeltaTimeSeconds()) {
+            return;
+        }
+        oldDeltaTime = GlobalTimer.getDeltaTimeSeconds();
         Object object = new Object();
 
         Transform transform = (Transform) object.addComponent(ComponentsList.TRANSFORM);
@@ -95,6 +100,11 @@ public class InputEngine implements EngineInterfaces {
 
         Mesh mesh = (Mesh) object.addComponent(ComponentsList.MESH);
         Collider collider = (Collider) object.addComponent(ComponentsList.COLLIDER);
+
+        Rigidbody rigidbody = (Rigidbody) object.addComponent(ComponentsList.RIGIDBODY);
+        forward.normalise();
+        forward.scale(5f);
+
         if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_1) == GLFW.GLFW_PRESS) {
             LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Cube.obj", mesh);
             collider.setType(ColliderList.CUBE);

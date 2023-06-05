@@ -86,6 +86,12 @@ public class LoaderOBJ {
         return mesh;
     }
 
+    public static float[] getColliderVertex(String path){
+        Mesh mesh = new Mesh();
+        loadMeshFromOBJ(path, mesh);
+        return mesh.getVertexes();
+    }
+
     private static void processVertex(String[] vertexData, List<Integer> indexes, List<Vector3f> normals, float[] normalArrays) {
         int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;
         indexes.add(currentVertexPointer);

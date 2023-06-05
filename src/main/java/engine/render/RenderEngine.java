@@ -3,13 +3,12 @@ package engine.render;
 import engine.interfaces.EngineInterfaces;
 import engine.render.renderer.Renderer;
 import engine.render.window.Window;
+import utilities.classes.GlobalTimer;
 
 public class RenderEngine implements EngineInterfaces {
 
     private Window window;
     private Renderer renderer;
-    private long startTime;
-    private long endTime;
 
     public RenderEngine() {
         window = Window.getInstance();
@@ -20,8 +19,6 @@ public class RenderEngine implements EngineInterfaces {
     public void init() {
         window.create();
         renderer.init();
-
-        startTime = System.currentTimeMillis();
     }
 
     @Override
@@ -29,7 +26,8 @@ public class RenderEngine implements EngineInterfaces {
         renderer.update();
         window.update();
 
-        setFPS();
+        // Установка FPS в заголовок окна
+        window.setWindowTitle("FPS: " + 1000 / GlobalTimer.getDeltaTimeMillis());
     }
 
     public boolean isShouldClose() {
@@ -39,12 +37,5 @@ public class RenderEngine implements EngineInterfaces {
     public void close() {
         renderer.close();
         window.close();
-    }
-
-    // Просчет fps
-    private void setFPS() {
-        endTime = System.currentTimeMillis();
-        window.setWindowTitle("FPS: " + 1000 / (float) (endTime - startTime));
-        startTime = endTime;
     }
 }

@@ -1,8 +1,10 @@
 package engine.physics.GJK;
 
+import org.lwjgl.util.Point;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Simplex {
@@ -40,9 +42,21 @@ public class Simplex {
 
     public ArrayList<Vector3f> getPoints() {
         ArrayList<Vector3f> pointsList = new ArrayList<>();
-        for (Vector3f vector : points) {
-            pointsList.add(vector);
+        for (int i = 0; i < size; i++) {
+            pointsList.add(points[i]);
         }
         return pointsList;
+    }
+
+    @Override
+    public String toString() {
+        String pointsString = "\n";
+        for (Vector3f vector : points) {
+            pointsString += vector.toString() + "\n";
+        }
+        return "Simplex{" +
+                "points=" + pointsString +
+                "size=" + size +
+                '}';
     }
 }
