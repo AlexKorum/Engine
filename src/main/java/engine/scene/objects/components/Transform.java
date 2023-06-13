@@ -3,8 +3,12 @@ package engine.scene.objects.components;
 import engine.scene.objects.components.enums.ComponentsList;
 import org.json.simple.JSONObject;
 import org.lwjgl.util.vector.Vector3f;
+import utilities.classes.GlobalTimer;
+
+import java.util.Random;
 
 public class Transform extends Component {
+    private final static Random random = new Random();
     private Vector3f position;
     private Vector3f rotation;
     private Vector3f scale;

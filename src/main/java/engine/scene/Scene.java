@@ -3,14 +3,18 @@ package engine.scene;
 import engine.interfaces.ConvertClassToJSON;
 import engine.interfaces.ConvertJSONToClass;
 import engine.scene.objects.Object;
+import engine.scene.objects.components.Transform;
+import engine.scene.objects.components.enums.ComponentsList;
 import engine.scene.objects.entities.Camera;
 import engine.scene.objects.entities.Light;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.lwjgl.util.vector.Vector3f;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
     // Паттерн Singleton
@@ -39,6 +43,18 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
         light = new Light();
     }
 
+
+    public void update() {
+        List<Object> objects = this.getObjects();
+        Transform transform;
+        Transform transformCamera = (Transform) mainCamera.getComponent(ComponentsList.TRANSFORM);
+        for (int i = 0; i < objects.size(); i++) {
+            transform = (Transform) objects.get(i).getComponent(ComponentsList.TRANSFORM);
+            if (Vector3f.sub(transformCamera.getPosition(), transform.getPosition(), null).length() >= 100f) {
+                this.objects.remove(objects.get(i).getName());
+            }
+        }
+    }
 
     // Геттеры и сеттеры
     public String getName() {

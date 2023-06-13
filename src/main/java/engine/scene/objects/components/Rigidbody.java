@@ -7,6 +7,7 @@ import utilities.classes.GlobalTimer;
 
 public class Rigidbody extends Component {
     private float mass;
+    private float elasticity;
     private boolean useGravity;
     private Vector3f velocity;
     private Vector3f force;
@@ -14,6 +15,7 @@ public class Rigidbody extends Component {
     public Rigidbody() {
         super(ComponentsList.RIGIDBODY);
         mass = 1;
+        elasticity = 0.1f;
         useGravity = true;
         velocity = new Vector3f();
         force = new Vector3f();
@@ -29,7 +31,6 @@ public class Rigidbody extends Component {
         force.set(0, 0, 0);
     }
 
-
     public Vector3f getVelocity() {
         return velocity;
     }
@@ -38,8 +39,24 @@ public class Rigidbody extends Component {
         return force;
     }
 
+    public float getElasticity() {
+        return elasticity;
+    }
+
+    public void setElasticity(float elasticity) {
+        this.elasticity = elasticity;
+    }
+
     public float getMass() {
         return mass;
+    }
+
+    public float getInvMass() {
+        if (mass == 0) {
+            return 0;
+        } else {
+            return mass;
+        }
     }
 
     public void setMass(float mass) {

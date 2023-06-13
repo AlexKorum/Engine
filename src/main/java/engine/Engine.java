@@ -55,7 +55,8 @@ public class Engine {
             Collider collider = (Collider) object.addComponent(ComponentsList.COLLIDER);
             Rigidbody rigidbody = (Rigidbody) object.addComponent(ComponentsList.RIGIDBODY);
 
-            transform.getPosition().set(0, i + 2 + ((float) i) / 10, ((float) i) / 10);
+            transform.getPosition().set(0, i + 5 + ((float) i) / 10, i);
+//            transform.getPosition().set(0, 2f, 0);
             LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Sphere.obj", mesh);
             collider.setVertexes(LoaderOBJ.getColliderVertex("src\\main\\resources\\Assets\\Prefabs\\Colliders\\OBJ\\CubeCollider.obj"));
 
@@ -68,8 +69,8 @@ public class Engine {
         cube.setName("Cube");
         Transform cubeTransform = (Transform) cube.getComponent(ComponentsList.TRANSFORM);
         cubeTransform.getPosition().translate(0, 0, 0);
-//        cubeTransform.getRotation().set(0,0.001f,0);
-        cubeTransform.getScale().set(1.01f, 1.01f, 1.01f);
+        cubeTransform.getRotation().set(0,0,0);
+        cubeTransform.getScale().set(100f, 1.01f, 100f);
         Mesh cubeMesh = (Mesh) cube.addComponent(ComponentsList.MESH);
         LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Cube.obj", cubeMesh);
         Collider colliderCube = (Collider) cube.addComponent(ComponentsList.COLLIDER);
@@ -91,7 +92,7 @@ public class Engine {
 
     private void update() {
         while (!renderEngine.isShouldClose()) {
-//            ((Transform) Scene.getInstance().getObject("GameObject").getComponent(ComponentsList.TRANSFORM)).getPosition().translate(0, -0.01f, 0);
+            Scene.getInstance().update();
 
             // Обновление глобального таймера
             globalTimer.update();

@@ -1,11 +1,8 @@
 package engine.physics.GJK;
 
-import org.lwjgl.util.Point;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Simplex {
 
@@ -21,11 +18,18 @@ public class Simplex {
         for (int i = 0; i < Math.min(points.length, 4); i++) {
             this.points[i] = points[i];
         }
-        size = points.length;
+        size = Math.min(points.length, 4);
+    }
+
+    public void set(ArrayList<Vector3f> points) {
+        for (int i = 0; i < Math.min(points.size(), 4); i++) {
+            this.points[i] = points.get(i);
+        }
+        size = Math.min(points.size(), 4);
     }
 
     public void pushToFront(Vector3f point) {
-        for (int i = size; i > 0; i--) {
+        for (int i = points.length - 1; i > 0; i--) {
             points[i] = points[i - 1];
         }
         points[0] = point;
@@ -52,7 +56,8 @@ public class Simplex {
     public String toString() {
         String pointsString = "\n";
         for (Vector3f vector : points) {
-            pointsString += vector.toString() + "\n";
+            if (vector != null)
+                pointsString += vector.toString() + "\n";
         }
         return "Simplex{" +
                 "points=" + pointsString +
