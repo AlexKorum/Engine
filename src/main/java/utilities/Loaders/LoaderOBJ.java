@@ -9,8 +9,29 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class LoaderOBJ {
+    private static int i = -1;
+
+    public static Mesh loadRandomMesh(Mesh mesh) {
+        Random random = new Random(System.nanoTime());
+        i++;
+        switch (i % 5) {
+            case 0:
+                return loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Cube.obj", mesh);
+            case 1:
+                return loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Sphere.obj", mesh);
+            case 2:
+                return loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Concuss.obj", mesh);
+            case 3:
+                return loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Cylinder.obj", mesh);
+            case 4:
+                return loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Torus.obj", mesh);
+        }
+        return null;
+    }
+
     public static Mesh loadMeshFromOBJ(String path, Mesh mesh) {
         FileReader fr = null;
 
@@ -86,7 +107,7 @@ public class LoaderOBJ {
         return mesh;
     }
 
-    public static float[] getColliderVertex(String path){
+    public static float[] getColliderVertex(String path) {
         Mesh mesh = new Mesh();
         loadMeshFromOBJ(path, mesh);
         return mesh.getVertexes();

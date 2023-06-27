@@ -83,7 +83,7 @@ public class Scene implements ConvertClassToJSON, ConvertJSONToClass {
 
     // Добавление и удаление объектов со сцены
     public void addObject(Object object) {
-        if (objects.size() >= 20) return;
+//        if (objects.size() >= 20) return;
         if (!objects.containsKey(object.getName())) {
             objects.put(object.getName(), object);
         } else {

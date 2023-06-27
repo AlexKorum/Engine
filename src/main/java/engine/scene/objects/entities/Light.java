@@ -7,7 +7,7 @@ public class Light {
     private Vector3f color;
 
     public Light() {
-        position = new Vector3f(-200, 500, 15);
+        position = new Vector3f(-200, 500, 200);
         color = new Vector3f(1, 1, 1);
     }
 

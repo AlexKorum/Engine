@@ -103,9 +103,9 @@ public class InputEngine implements EngineInterfaces {
         collider.setVertexes(LoaderOBJ.getColliderVertex("src\\main\\resources\\Assets\\Prefabs\\Colliders\\OBJ\\CubeCollider.obj"));
 
         Rigidbody rigidbody = (Rigidbody) object.addComponent(ComponentsList.RIGIDBODY);
-        forward.normalise();
-        forward.scale(50f);
-        rigidbody.addForce(new Vector3f(forward));
+//        forward.normalise();
+//        forward.scale(50f);
+//        rigidbody.addForce(new Vector3f(forward));
 
         if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_1) == GLFW.GLFW_PRESS) {
             LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Cube.obj", mesh);
@@ -113,7 +113,7 @@ public class InputEngine implements EngineInterfaces {
         }
         if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_2) == GLFW.GLFW_PRESS) {
             LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Sphere.obj", mesh);
-//            collider.setType(ColliderList.SPHERE);
+            collider.setType(ColliderList.SPHERE);
         }
         if (GLFW.glfwGetKey(Window.getInstance().getWindowId(), GLFW.GLFW_KEY_3) == GLFW.GLFW_PRESS) {
             LoaderOBJ.loadMeshFromOBJ("src\\main\\resources\\Assets\\Prefabs\\Models\\OBJ\\Plane.obj", mesh);
